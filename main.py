@@ -119,12 +119,13 @@ async def leave(ctx):
     await ctx.voice_client.disconnect()
 
 @bot.command(aliases=['paly', 'queue', 'que'])
-async def play(ctx):
+async def play(ctx, file = None):
     guild = ctx.guild
     voice_client: discord.VoiceClient = discord.utils.get(bot.voice_clients, guild=guild)
-    audio_source = discord.FFmpegPCMAudio('no-signal-7076.mp3')
-    if not voice_client.is_playing():
-        voice_client.play(audio_source, after=None)
+	if file != None:
+    	audio_source = discord.FFmpegPCMAudio("assets/"+file)
+    	if not voice_client.is_playing():
+        	voice_client.play(audio_source, after=None)
 		
 # ==========================================================
 #Reply to DM's
