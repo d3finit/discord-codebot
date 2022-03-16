@@ -25,7 +25,7 @@ bot = commands.Bot(
 @bot.event
 async def on_ready():
 	# Setting `Playing ` status
-	await bot.change_presence(activity=discord.Game(name="$help | replit.com/@Koder09/CodeBot"))
+	await bot.change_presence(activity=discord.Game(name="$help | github.com/CodeDude404/discord-codebot"))
 
 	print("ONLINE NOW ;)")
 
