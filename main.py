@@ -118,7 +118,7 @@ async def join(ctx):
 async def leave(ctx):
     await ctx.voice_client.disconnect()
 
-@bot.command(aliases=['play'])
+@bot.command(aliases=['play'],name='play', help='Allows you to play mp3s.')
 async def music(ctx, todo = None, file = None):
 	guild = ctx.guild
 	voice_client: discord.VoiceClient = 		discord.utils.get(bot.voice_clients, guild=guild)
