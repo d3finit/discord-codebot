@@ -100,7 +100,7 @@ async def unlock(ctx, channel : discord.TextChannel=None):
 
 
 # purge command
-@bot.command(name='purge', help='Deletes x messages')
+@bot.command(name='purge', help='Deletes x messages',aliases=['clear','nuke','wipe'])
 async def purge(ctx, amount=5):
 	await ctx.channel.purge(limit=amount)
 
@@ -121,7 +121,7 @@ async def leave(ctx):
 	await ctx.voice_client.disconnect();
 	await ctx.send('Left voice.');
 
-@bot.command(aliases=['play'],name='music', help='Allows you to play mp3s.')
+@bot.command(aliases=['m'],name='music', help='Allows you to play mp3s. ($music list to see all songs, $m <arg> is the same thing.)')
 async def music(ctx, todo = None, file = None):
 	guild = ctx.guild
 	voice_client: discord.VoiceClient = 		discord.utils.get(bot.voice_clients, guild=guild)
