@@ -112,11 +112,14 @@ async def purge(ctx, amount=5):
 
 @bot.command(name='join', help='Joins the voice channel that the user is in.')
 async def join(ctx):
-    channel = ctx.author.voice.channel
-    await channel.connect()
+	channel = ctx.author.voice.channel;
+	await channel.connect();
+	await ctx.send('Joined voice.');
+	
 @bot.command(name='leave', help='Leaves the voice channel that the user is in.')
 async def leave(ctx):
-    await ctx.voice_client.disconnect()
+	await ctx.voice_client.disconnect();
+	await ctx.send('Left voice.');
 
 @bot.command(aliases=['play'],name='music', help='Allows you to play mp3s.')
 async def music(ctx, todo = None, file = None):
@@ -127,11 +130,23 @@ async def music(ctx, todo = None, file = None):
 			audio_source = discord.FFmpegPCMAudio("assets/"+file+".mp3")
 			if not voice_client.is_playing():
 				voice_client.play(audio_source, after=None)
+				await ctx.send(f'Playing {file}.mp3')
+			else:		
+				await ctx.send(f'Failed to play {file}.mp3. Try running $music stop then trying again.')
 
 	elif todo == "stop":
-		voice_client.stop()
+		voice_client.stop()		
+		await ctx.send(f'Stopped music.')
 	elif todo == "pause":
 		voice_client.pause()
+		await ctx.send(f'Paused music')
+	elif todo == "resume":
+		voice_client.resume()
+		await ctx.send(f'Resumed music')
+	elif todo == "list":
+		songs = os.listdir("./assets")
+		await ctx.send(f'All songs: '+ str(songs))
+		
 		
 # ==========================================================
 #Reply to DM's
