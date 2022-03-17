@@ -155,11 +155,23 @@ async def music(ctx, todo = None, file = None):
 #Reply to DM's
 # ==========================================================
 
-#@bot.event
-#async def on_message(message):
- #   if isinstance(message.channel, discord.channel.DMChannel) and message.author != bot.user:
-  #      await message.channel.send('This is a DM')
-		
+@bot.listen('on_message')
+async def msgevent(message):
+   if isinstance(message.channel, discord.channel.DMChannel) and message.author != bot.user:
+	   if message.content == 'repo':
+      		await message.channel.send('View our GitHub at github.com/CodeDude404/discord-codebot')
+	   elif message.content == 'help':
+		   await message.channel.send('Use $help in a server with the bot in it too see the help menu.')
+	   else:
+		   await message.channel.send("Hmmm I don't understand.")
 
+
+# ==========================================================
+# Ping command
+# ==========================================================
+@bot.command(name='ping', help="Checks the bot's ping.")
+async def ping(ctx):
+	guild = ctx.guild		
+	await ctx.send('My ping is {0} ms'.format(str(bot.latency * 1000)))
 
 bot.run(TOKEN)
