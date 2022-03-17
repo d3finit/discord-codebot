@@ -145,7 +145,10 @@ async def music(ctx, todo = None, file = None):
 		await ctx.send(f'Resumed music')
 	elif todo == "list":
 		songs = os.listdir("./assets")
-		await ctx.send(f'All songs: '+ str(songs))
+		songstr = "Songs: \n  "
+		for i in range(len(songs)):
+			songstr = songstr + songs[i] +"\n  "
+		await ctx.send(songstr)
 		
 		
 # ==========================================================
