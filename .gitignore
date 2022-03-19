@@ -1,0 +1,5 @@
+# exclude everything
+userinfo/*
+
+# exception to the rule
+!userinfo/default.json
