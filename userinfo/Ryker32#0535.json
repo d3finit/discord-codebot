@@ -1,0 +1,11 @@
+{
+    "name": "name",
+    "mcinfo": {
+        "javaign": "ign",
+        "pocketign": "ign"
+    },
+    "levels": {
+        "xp": 180,
+        "level": 0
+    }
+}

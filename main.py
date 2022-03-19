@@ -61,7 +61,7 @@ async def mute(ctx, member: discord.Member):
 
 
 @bot.command(name='unmute', help='Unmutes user.')
-async def mute(ctx, member: discord.Member):
+async def unmute(ctx, member: discord.Member):
 	mutedRole = discord.utils.get(ctx.guild.roles, name="Muted")
 
 	await member.remove_roles(mutedRole)
@@ -151,9 +151,34 @@ async def music(ctx, todo = None, file = None):
 			songstr = songstr + songs[i] +"\n  "
 		await ctx.send(songstr)
 		
+
+# ==========================================================
+# Userinfo command
+# ==========================================================
+
+@bot.command(name='stats', help="Gets a user's stats")
+async def stats(ctx, member: discord.Member):
+	print(f"{member.name}#{member.discriminator}")
+	if os.path.exists(f'userinfo/{member.name}#{member.discriminator}.json') == True:
+		filename = f'userinfo/{member.name}#{member.discriminator}.json'
+		with open(filename, 'r') as f:
+			data = json.load(f)
+			xplevel = data["levels"]["xp"]
+		if member.nick == "None":
+			embed = discord.Embed(title=f"**Stats for {member.name}**", description=f"XP level: {str(xplevel)}.",colour=discord.Colour.gold())
+		
+		else:
+			embed = discord.Embed(title=f"**Stats for {member.nick}**", description=f"XP level: {str(xplevel)}.",colour=discord.Colour.gold())	
+		
+		await ctx.send(embed=embed)
+		# print(f"Unmuted user {member.mention}")
+
+
+
+
 		
 # ==========================================================
-#Reply to DM's
+# Reply to DM's
 # ==========================================================
 
 @bot.listen('on_message')
@@ -163,18 +188,6 @@ async def msgevent(message):
 			await message.channel.send('View our GitHub at github.com/CodeDude404/discord-codebot')
 		elif message.content == 'help':
 			await message.channel.send('Use $help in a server with the bot in it too see the help menu.')
-		elif message.content == 'register':
-			print(str(message.author) + " is trying to register")
-			# print(os.path.exists(f'userinfo/{message.author}.json'))
-			if os.path.exists(f'userinfo/{message.author}.json') == False:
-				f = open(f'userinfo/{message.author}.json', "w")
-				f.write(open("userinfo/default.json", "r").read())
-				f.close()
-				await message.channel.send(f"Registered user {str(message.author)}")  
-			else:
-				await message.channel.send("User allready is registered.")
-		else:
-			await message.channel.send("Hmmm I don't understand.")
 
 @bot.listen('on_voice_state_update')
 async def voiceevent(member, before, after): 
@@ -208,6 +221,9 @@ async def msgevent(message):
  
 		# await message.channel.send(f"Registered user {str(message.author)}")  
 		else:
-			await message.channel.send("Sorry, your account is not registered, DM register to me to earn XP.")
+			if os.path.exists(f'userinfo/{message.author}.json') == False:
+				f = open(f'userinfo/{message.author}.json', "w")
+				f.write(open("userinfo/default.json", "r").read())
+				f.close()
 		
 bot.run(TOKEN)
