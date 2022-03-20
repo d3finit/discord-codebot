@@ -165,10 +165,10 @@ async def stats(ctx, member: discord.Member):
 			data = json.load(f)
 			xplevel = data["levels"]["xp"]
 		if member.nick == "None":
-			embed = discord.Embed(title=f"**Stats for {member.name}**", description=f"XP level: {str(xplevel)}.",colour=discord.Colour.gold())
+			embed = discord.Embed(title=f"**Stats for {member.name}**", description=f"XP level: `{str(xplevel)}`.",colour=discord.Colour.gold())
 		
 		else:
-			embed = discord.Embed(title=f"**Stats for {member.nick}**", description=f"XP level: {str(xplevel)}.",colour=discord.Colour.gold())	
+			embed = discord.Embed(title=f"**Stats for {member.nick}**", description=f"XP level: `{str(xplevel)}.`",colour=discord.Colour.gold())	
 		
 		await ctx.send(embed=embed)
 		# print(f"Unmuted user {member.mention}")
