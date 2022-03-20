@@ -153,7 +153,7 @@ async def music(ctx, todo = None, file = None):
 		
 
 # ==========================================================
-# Userinfo command
+# Stats command
 # ==========================================================
 
 @bot.command(name='stats', help="Gets a user's stats")
@@ -168,7 +168,7 @@ async def stats(ctx, member: discord.Member):
 			embed = discord.Embed(title=f"**Stats for {member.name}**", description=f"XP level: `{str(xplevel)}`.",colour=discord.Colour.gold())
 		
 		else:
-			embed = discord.Embed(title=f"**Stats for {member.nick}**", description=f"XP level: `{str(xplevel)}.`",colour=discord.Colour.gold())	
+			embed = discord.Embed(title=f"**Stats for {member.nick}**", description=f"XP level: `{str(xplevel)}`.",colour=discord.Colour.gold())	
 		
 		await ctx.send(embed=embed)
 		# print(f"Unmuted user {member.mention}")

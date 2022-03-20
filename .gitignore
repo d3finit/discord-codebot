@@ -1,5 +1,6 @@
 # exclude everything
 userinfo/*
+TOKEN.txt
 
 # exception to the rule
 !userinfo/default.json
