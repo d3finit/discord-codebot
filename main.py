@@ -9,8 +9,10 @@ from discord.ext import commands
 
 
 client = discord.Client()
-TOKEN = os.environ['TOKEN']
+with open("TOKEN.txt") as f:
+	TOKEN = f.read()
 
+# print(TOKEN)
 # Change only the no_category default string
 help_command = commands.DefaultHelpCommand(
 	no_category = 'Commands'
