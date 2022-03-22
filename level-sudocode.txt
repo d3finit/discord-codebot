@@ -1,0 +1,13 @@
+when xp = nextlevel * 2:
+	levelup()
+
+when xp = nextlevel * 4:
+	levelup()
+	lvl1 requ: 4
+	lvl2 requ: 8
+	lvl 10 requ: 40
+
+when xp = nextLevel * 8:
+	lvl1 requ: 8
+	lvl2: 
+	

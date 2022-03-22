@@ -216,7 +216,7 @@ async def msgevent(message):
 			filename = f'userinfo/{message.author}.json'
 			with open(filename, 'r') as f:
 				data = json.load(f)
-				data["levels"]["xp"] = data["levels"]["xp"] + 10 # <--- add `id` value.
+				data["levels"]["xp"] = data["levels"]["xp"] + len(message.content) # <--- add `id` value.
 				os.remove(filename)
 			with open(filename, 'w') as f:
 				json.dump(data, f, indent=4)
