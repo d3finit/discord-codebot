@@ -166,8 +166,9 @@ async def stats(ctx, member: discord.Member):
 		with open(filename, 'r') as f:
 			data = json.load(f)
 			xplevel = data["levels"]["xp"]
+			statlevel = str(data["levels"]["level"])
 		if member.nick == "None":
-			embed = discord.Embed(title=f"**Stats for {member.name}**", description=f"XP level: `{str(xplevel)}`.",colour=discord.Colour.gold())
+			embed = discord.Embed(title=f"**Stats for {member.name}**", description=f"XP: `{str(xplevel)}`.\nLevel: `{statlevel}`.",colour=discord.Colour.gold())
 		
 		else:
 			embed = discord.Embed(title=f"**Stats for {member.nick}**", description=f"XP level: `{str(xplevel)}`.",colour=discord.Colour.gold())	
@@ -216,12 +217,16 @@ async def msgevent(message):
 			filename = f'userinfo/{message.author}.json'
 			with open(filename, 'r') as f:
 				data = json.load(f)
-				data["levels"]["xp"] = data["levels"]["xp"] + len(message.content) # <--- add `id` value.
+				if data["levels"]["xp"] + len(message.content) >= data["levels"]["level"]+1*8:
+					data["levels"]["xp"] = data["levels"]["xp"] + len(message.content)
+					data["levels"]["xp"] = data["levels"]["xp"] -data["levels"]["level"]+1*8
+					 await message.channel.send(f"GG {str(message.author)}, you advanced to level {str(data["levels"]["level"])}!")
+				else:
+					data["levels"]["xp"] = data["levels"]["xp"] + len(message.content) # update xp level
 				os.remove(filename)
 			with open(filename, 'w') as f:
 				json.dump(data, f, indent=4)
  
-		# await message.channel.send(f"Registered user {str(message.author)}")  
 		else:
 			if os.path.exists(f'userinfo/{message.author}.json') == False:
 				f = open(f'userinfo/{message.author}.json', "w")
