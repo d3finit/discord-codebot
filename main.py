@@ -252,16 +252,19 @@ async def msgevent(message):
 			filename = f'userinfo/{message.author}.json'
 			with open(filename, 'r') as f:
 				data = json.load(f)
+				#print(data)
 
 			data["levels"]["xp"] = len(message.content) + data["levels"]["xp"]
+			print(f"granted {str(len(message.content))} xp to {str(message.author)}")
 			if data["levels"]["xp"] >= (data["levels"]["level"]+1)*100:
-				data["levels"]["xp"] = data["levels"]["xp"]  - (data["levels"]["level"]+1)*100
+				data["levels"]["xp"] = data["levels"]["xp"] - (data["levels"]["level"]+1)*100
 				data["levels"]["level"] = data["levels"]["level"] + 1
+					
 				await message.channel.send(f"GG {str(message.author)}, you advanced to level {str(data['levels']['level'])}!")
-				os.remove(filename)
+			os.remove(filename)
 
-				with open(filename, 'w') as f:
-					json.dump(data, f, indent=4)
+			with open(filename, 'w') as f:
+				json.dump(data, f, indent=4)
  
 		else:
 			if os.path.exists(f'userinfo/{message.author}.json') == False:
