@@ -252,18 +252,16 @@ async def msgevent(message):
 			filename = f'userinfo/{message.author}.json'
 			with open(filename, 'r') as f:
 				data = json.load(f)
-			if len(message.content) > len("hellohellohellohellohellohellohellohellohellohellohellohellohellohello"):
-				pass
-			else:
-				data["levels"]["xp"] = len(message.content) + data["levels"]["xp"]
-				if data["levels"]["xp"] >= (data["levels"]["level"]+1)*100:
-					data["levels"]["xp"] = data["levels"]["xp"]  - (data["levels"]["level"]+1)*100
-					data["levels"]["level"] = data["levels"]["level"] + 1
-					await message.channel.send(f"GG {str(message.author)}, you advanced to level {str(data['levels']['level'])}!")
-					os.remove(filename)
 
-					with open(filename, 'w') as f:
-						json.dump(data, f, indent=4)
+			data["levels"]["xp"] = len(message.content) + data["levels"]["xp"]
+			if data["levels"]["xp"] >= (data["levels"]["level"]+1)*100:
+				data["levels"]["xp"] = data["levels"]["xp"]  - (data["levels"]["level"]+1)*100
+				data["levels"]["level"] = data["levels"]["level"] + 1
+				await message.channel.send(f"GG {str(message.author)}, you advanced to level {str(data['levels']['level'])}!")
+				os.remove(filename)
+
+				with open(filename, 'w') as f:
+					json.dump(data, f, indent=4)
  
 		else:
 			if os.path.exists(f'userinfo/{message.author}.json') == False:
