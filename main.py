@@ -8,9 +8,12 @@ import asyncio
 from discord.ext import commands
 
 
+
 client = discord.Client()
 with open("TOKEN.txt") as f:
 	TOKEN = f.read()
+if TOKEN == "":
+	TOKEN = os.environ['TOKEN']
 
 # print(TOKEN)
 # Change only the no_category default string
@@ -25,6 +28,10 @@ bot = commands.Bot(
 	help_command = help_command
 )
 
+
+
+
+
 @bot.event
 async def on_ready():
 	# Setting `Playing ` status
@@ -37,54 +44,47 @@ async def on_ready():
 
 
 
-		
+
+
+	
 # ==========================================================
 # Mod FEatures
 # ==========================================================
-@bot.command(name='mute', help='Mutes user.')
-@commands.has_permissions(manage_messages=True)
-async def mute(ctx, member: discord.Member):
-	mutedRole = discord.utils.get(ctx.guild.roles, name="Muted")
 
-	await member.add_roles(mutedRole)
+
+async def mute(ctx, member: discord.Member):
+		"""Mutes users"""
+		mutedRole = discord.utils.get(ctx.guild.roles, name="Muted")
+
+		await member.add_roles(mutedRole)
 	# await member.send(f"You have been muted on the server: {ctx.guild.name}")
 
-	if member.nick == "None":
-		embed = discord.Embed(title=f"Muted {member.name}", description=f"Sucessfully muted user {member.mention}",colour=discord.Colour.gold())
+		if member.nick == "None":
+			embed = discord.Embed(title=f"Muted {member.name}", description=f"Sucessfully muted user {member.mention}",colour=discord.Colour.gold())
 		
-	else:
-		embed = discord.Embed(title=f"Muted {member.nick}", description=f"Sucessfully muted user {member.mention}",colour=discord.Colour.gold())	
-		
-	await ctx.send(embed=embed)
-	print(f"Muted user {member.mention}")
+		else:
+			embed = discord.Embed(title=f"Muted {member.nick}", description=f"Sucessfully muted user {member.mention}",colour=discord.Colour.gold())	
+			
+		await ctx.send(embed=embed)
+		print(f"Muted user {member.mention}")
 
-
-
-
-
-@bot.command(name='unmute', help='Unmutes user.')
 async def unmute(ctx, member: discord.Member):
-	mutedRole = discord.utils.get(ctx.guild.roles, name="Muted")
-
-	await member.remove_roles(mutedRole)
+		mutedRole = discord.utils.get(ctx.guild.roles, name="Muted")
+		"""Unmutes users"""
+		await member.remove_roles(mutedRole)
 	# await member.send(f"You have been unmuted on the server: {ctx.guild.name}")
 
-	if member.nick == "None":
-		embed = discord.Embed(title=f"Unmuted {member.name}", description=f"Sucessfully unmuted user {member.mention}",colour=discord.Colour.gold())
+		if member.nick == "None":
+			embed = discord.Embed(title=f"Unmuted {member.name}", description=f"Sucessfully unmuted user {member.mention}",colour=discord.Colour.gold())
 		
-	else:
-		embed = discord.Embed(title=f"Unmuted {member.nick}", description=f"Sucessfully unmuted user {member.mention}",colour=discord.Colour.gold())	
+		else:
+			embed = discord.Embed(title=f"Unmuted {member.nick}", description=f"Sucessfully unmuted user {member.mention}",colour=discord.Colour.gold())	
 		
-	await ctx.send(embed=embed)
-	print(f"Unmuted user {member.mention}")
+		await ctx.send(embed=embed)
+		print(f"Unmuted user {member.mention}")
 
 
 
-
-
-
-@bot.command(name='lock', help='Locks channel.')
-@commands.has_permissions(manage_channels=True)
 async def lock(ctx, channel : discord.TextChannel=None):
 	channel = channel or ctx.channel
 	overwrite = channel.overwrites_for(ctx.guild.default_role)
@@ -92,14 +92,52 @@ async def lock(ctx, channel : discord.TextChannel=None):
 	await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
 	await ctx.send('Channel locked.')
 
-@bot.command(name='unlock', help='Unlocks channel.')
-@commands.has_permissions(manage_channels=True)
+
+
+
 async def unlock(ctx, channel : discord.TextChannel=None):
 	channel = channel or ctx.channel
 	overwrite = channel.overwrites_for(ctx.guild.default_role)
-	overwrite.send_messages = True
+	overwrite.send_messages = Null
 	await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
 	await ctx.send('Channel unlocked.')
+
+	
+class Moderation(commands.Cog):
+	def __init__(self, bot):
+		self.bot = bot
+		self._last_member = None
+
+
+	
+	@commands.command()
+	async def mute(self, ctx, user: discord.Member):
+		"""Mute users."""
+		await mute(ctx, user) # uses the mute function
+
+	@commands.command()
+	async def unmute(self, ctx, user: discord.Member):
+		"""Unmute users."""
+		await mute(ctx, user) # uses the unmute function
+
+	@commands.command()
+	async def lock(self, ctx, channel: discord.TextChannel):
+		"""Locks channels."""
+		await lock(ctx, channel) # uses the lock function
+		
+	@commands.command()
+	async def unlock(self, ctx, channel: discord.TextChannel):
+		"""Unlocks channels."""
+		await unlock(ctx, channel) # uses the unlock function
+
+bot.add_cog(Moderation(bot))
+
+
+
+
+
+
+
 
 
 # purge command
