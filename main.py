@@ -252,6 +252,8 @@ async def msgevent(message):
 			filename = f'userinfo/{message.author}.json'
 			with open(filename, 'r') as f:
 				data = json.load(f)
+				if len(message.content) > len("hellohellohellohellohellohellohellohellohellohellohellohellohellohello"):
+					break
 				data["levels"]["xp"] = len(message.content) + data["levels"]["xp"]
 				if data["levels"]["xp"] >= (data["levels"]["level"]+1)*100:
 					data["levels"]["xp"] = data["levels"]["xp"]  - (data["levels"]["level"]+1)*100
