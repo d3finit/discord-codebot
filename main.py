@@ -252,14 +252,11 @@ async def msgevent(message):
 			filename = f'userinfo/{message.author}.json'
 			with open(filename, 'r') as f:
 				data = json.load(f)
-				if data["levels"]["xp"] + len(message.content) >= data["levels"]["level"]+1*100:
-					data["levels"]["xp"] = data["levels"]["xp"] + len(message.content)
+				data["levels"]["xp"] = len(message.content) + data["levels"]["xp"]
+				if data["levels"]["xp"] >= (data["levels"]["level"]+1)*100:
 					data["levels"]["xp"] = data["levels"]["xp"]  - data["levels"]["level"]+1*100
 					await message.channel.send(f"GG {str(message.author)}, you advanced to level {str(data['levels']['level'])}!")
 					data["levels"]["level"] = data["levels"]["level"] + 1
-				else:
-					
-					data["levels"]["xp"] = data["levels"]["xp"] + len(message.content) # update xp level
 				os.remove(filename)
 			with open(filename, 'w') as f:
 				json.dump(data, f, indent=4)
