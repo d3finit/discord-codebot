@@ -93,8 +93,6 @@ async def lock(ctx, channel : discord.TextChannel=None):
 	await ctx.send('Channel locked.')
 
 
-
-
 async def unlock(ctx, channel : discord.TextChannel=None):
 	channel = channel or ctx.channel
 	overwrite = channel.overwrites_for(ctx.guild.default_role)
@@ -109,7 +107,6 @@ class Moderation(commands.Cog):
 		self._last_member = None
 
 
-	
 	@commands.command()
 	async def mute(self, ctx, user: discord.Member):
 		"""Mute users."""
