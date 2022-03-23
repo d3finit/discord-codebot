@@ -203,10 +203,10 @@ async def stats(ctx, member: discord.Member):
 			xplevel = data["levels"]["xp"]
 			statlevel = str(data["levels"]["level"])
 		if member.nick == "None":
-			embed = discord.Embed(title=f"**Stats for {member.name}**", description=f"XP: `{str(xplevel)}`.\nLevel: `{statlevel}`.",colour=discord.Colour.gold())
+			embed = discord.Embed(title=f"**Stats for {member.name}**", description=f"XP: {str(xplevel)}.\nLevel: {str(statlevel)}.",colour=discord.Colour.gold())
 		
 		else:
-			embed = discord.Embed(title=f"**Stats for {member.nick}**", description=f"XP level: `{str(xplevel)}`.",colour=discord.Colour.gold())	
+			embed = discord.Embed(title=f"**Stats for {member.nick}**", description=f"XP: {str(xplevel)}.\nLevel: {str(statlevel)}.",colour=discord.Colour.gold())	
 		
 		await ctx.send(embed=embed)
 		# print(f"Unmuted user {member.mention}")
@@ -225,7 +225,7 @@ async def msgevent(message):
 		if message.content == 'repo':
 			await message.channel.send('View our GitHub at github.com/CodeDude404/discord-codebot')
 		elif message.content == 'help':
-			await message.channel.send('Use $help in a server with the bot in it too see the help menu.')
+			await message.channel.send('Use $help in a server with the bot in it too see the help menu. Join out discord server for more help at discord.gg/7Y9fZEN58J.')
 
 @bot.listen('on_voice_state_update')
 async def voiceevent(member, before, after): 
@@ -253,15 +253,16 @@ async def msgevent(message):
 			with open(filename, 'r') as f:
 				data = json.load(f)
 				if len(message.content) > len("hellohellohellohellohellohellohellohellohellohellohellohellohellohello"):
-					break
-				data["levels"]["xp"] = len(message.content) + data["levels"]["xp"]
-				if data["levels"]["xp"] >= (data["levels"]["level"]+1)*100:
-					data["levels"]["xp"] = data["levels"]["xp"]  - (data["levels"]["level"]+1)*100
-					await message.channel.send(f"GG {str(message.author)}, you advanced to level {str(data['levels']['level'])}!")
-					data["levels"]["level"] = data["levels"]["level"] + 1
-				os.remove(filename)
-			with open(filename, 'w') as f:
-				json.dump(data, f, indent=4)
+					pass
+				else:
+					data["levels"]["xp"] = len(message.content) + data["levels"]["xp"]
+					if data["levels"]["xp"] >= (data["levels"]["level"]+1)*100:
+						data["levels"]["xp"] = data["levels"]["xp"]  - (data["levels"]["level"]+1)*100
+						await message.channel.send(f"GG {str(message.author)}, you advanced to level {str(data['levels']['level'])}!")
+						data["levels"]["level"] = data["levels"]["level"] + 1
+						os.remove(filename)
+						with open(filename, 'w') as f:
+							json.dump(data, f, indent=4)
  
 		else:
 			if os.path.exists(f'userinfo/{message.author}.json') == False:
