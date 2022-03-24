@@ -100,7 +100,58 @@ async def unlock(ctx, channel : discord.TextChannel=None):
 	await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
 	await ctx.send('Channel unlocked.')
 
-	
+async def banword(ctx, word):
+	gname = ctx.guild.name.replace(" ", "")
+	os.system(f"mkdir conf/server/{gname}")
+	# print("Made folder")
+	os.system(f"touch conf/server/{gname}/bannedwords.txt")
+	# print("Made file")
+
+
+	f = open(f"conf/server/{gname}/bannedwords.txt", "a")
+	f.write(f"\n{word}")
+	f.close()
+
+	embed = discord.Embed(title=f"Added {word} to the banned words list.", description=f"Sucessfully banned {word}. Unban it with $unbanword {word}",colour=discord.Colour.red())	
+		
+	await ctx.send(embed=embed)
+
+async def unbanword(ctx, word):
+	gname = ctx.guild.name.replace(" ", "")
+	# Make sure this is the valid path to your file
+	file = f"conf/server/{gname}/bannedwords.txt"
+	remove = word
+
+	# Read in the file
+	with open(file, "r") as f:
+		filedata = f.read()
+
+	# Replace the target string
+	filedata = filedata.replace(remove, "")
+
+	# Write the file out again
+	with open(file, "w") as f:
+		f.write(filedata)
+
+	embed = discord.Embed(title=f"Removed {word} from the banned words list.", description=f"Sucessfully unbanned {word}. Ban it with $banword {word}",colour=discord.Colour.red())	
+		
+	await ctx.send(embed=embed)
+
+# Banned words listener
+@bot.listen('on_message')
+async def msgevent(message):
+	if isinstance(message.channel, discord.channel.DMChannel) == False and message.author != bot.user:
+		gname = message.guild.name.replace(" ", "")
+		# Make sure this is the valid path to your file
+		file = f"conf/server/{gname}/bannedwords.txt"
+		with open(file) as f:
+			lines = f.read().splitlines()
+		for line in lines:
+			if line in message.content:
+				print("Banned word detected, removing...")
+				await message.delete()
+
+		
 class Moderation(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
@@ -126,7 +177,17 @@ class Moderation(commands.Cog):
 	async def unlock(self, ctx, channel: discord.TextChannel):
 		"""Unlocks channels."""
 		await unlock(ctx, channel) # uses the unlock function
+		
+	@commands.command()
+	async def banword(self, ctx, word):
+		"""Bans words from being said on the server. [WIP]"""
+		await banword(ctx, word) # uses the banword function
 
+	@commands.command()
+	async def unbanword(self, ctx, word):
+		"""Unbans words from being said on the server. [WIP]"""
+		await unbanword(ctx, word) # uses the unbanword function
+		
 bot.add_cog(Moderation(bot))
 
 
@@ -236,6 +297,7 @@ async def voiceevent(member, before, after):
 async def ping(ctx):
 	guild = ctx.guild		
 	await ctx.send('My ping is {0} ms'.format(str(bot.latency * 1000)))
+
 
 # ==========================================================
 # Levels Code
