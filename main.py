@@ -115,7 +115,7 @@ class Moderation(commands.Cog):
 	@commands.command()
 	async def unmute(self, ctx, user: discord.Member):
 		"""Unmute users."""
-		await mute(ctx, user) # uses the unmute function
+		await unmute(ctx, user) # uses the unmute function
 
 	@commands.command()
 	async def lock(self, ctx, channel: discord.TextChannel):
