@@ -134,9 +134,6 @@ bot.add_cog(Moderation(bot))
 
 
 
-
-
-
 # purge command
 @bot.command(name='purge', help='Deletes x messages',aliases=['clear','nuke','wipe'])
 async def purge(ctx, amount=5):
@@ -196,8 +193,8 @@ async def music(ctx, todo = None, file = None):
 @bot.command(name='stats', help="Gets a user's stats")
 async def stats(ctx, member: discord.Member):
 	print(f"{member.name}#{member.discriminator}")
-	if os.path.exists(f'userinfo/{member.name}#{member.discriminator}.json') == True:
-		filename = f'userinfo/{member.name}#{member.discriminator}.json'
+	if os.path.exists(f'conf/user/{member.name}#{member.discriminator}.json') == True:
+		filename = f'conf/user/{member.name}#{member.discriminator}.json'
 		with open(filename, 'r') as f:
 			data = json.load(f)
 			xplevel = data["levels"]["xp"]
@@ -247,9 +244,9 @@ async def ping(ctx):
 async def msgevent(message):
 	if isinstance(message.channel, discord.channel.DMChannel) == False and message.author != bot.user:
 	# print(str(message.author) + " is trying to register")
-			# print(os.path.exists(f'userinfo/{message.author}.json'))
-		if os.path.exists(f'userinfo/{message.author}.json') == True:
-			filename = f'userinfo/{message.author}.json'
+			# print(os.path.exists(f'conf/user/{message.author}.json'))
+		if os.path.exists(f'conf/user/{message.author}.json') == True:
+			filename = f'conf/user/{message.author}.json'
 			with open(filename, 'r') as f:
 				data = json.load(f)
 				#print(data)
@@ -267,9 +264,9 @@ async def msgevent(message):
 				json.dump(data, f, indent=4)
  
 		else:
-			if os.path.exists(f'userinfo/{message.author}.json') == False:
-				f = open(f'userinfo/{message.author}.json', "w")
-				f.write(open("userinfo/default.json", "r").read())
+			if os.path.exists(f'conf/user/{message.author}.json') == False:
+				f = open(f'conf/user/{message.author}.json', "w")
+				f.write(open("conf/user/default.json", "r").read())
 				f.close()
 		
 bot.run(TOKEN)

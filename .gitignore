@@ -1,6 +1,6 @@
 # exclude everything
-userinfo/*
+conf/users/*
 TOKEN.txt
 
 # exception to the rule
-!userinfo/default.json
+!conf/user/default.json
