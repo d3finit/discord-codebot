@@ -1,5 +1,6 @@
 # exclude everything
-conf/users/*
+conf/user/*
+conf/server/*
 TOKEN.txt
 
 # exception to the rule

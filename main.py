@@ -7,7 +7,7 @@ import discord
 import asyncio
 from discord.ext import commands
 
-
+letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 
 client = discord.Client()
 with open("TOKEN.txt") as f:
@@ -48,7 +48,7 @@ async def on_ready():
 
 	
 # ==========================================================
-# Mod FEatures
+# Mod Features
 # ==========================================================
 
 
@@ -128,6 +128,7 @@ async def unbanword(ctx, word):
 
 	# Replace the target string
 	filedata = filedata.replace(remove, "")
+	filedata = filedata.replace("\n","")
 
 	# Write the file out again
 	with open(file, "w") as f:
@@ -148,8 +149,14 @@ async def msgevent(message):
 			lines = f.read().splitlines()
 		for line in lines:
 			if line in message.content:
-				print("Banned word detected, removing...")
-				await message.delete()
+				linevalid = False
+				for letter in letters:
+					if letter in line:
+						linevalid = True
+						break
+				if linevalid:	
+					print("Banned word detected, removing...")
+					await message.delete()
 
 		
 class Moderation(commands.Cog):
@@ -180,12 +187,12 @@ class Moderation(commands.Cog):
 		
 	@commands.command()
 	async def banword(self, ctx, word):
-		"""Bans words from being said on the server. [WIP]"""
+		"""Bans words from being said on the server."""
 		await banword(ctx, word) # uses the banword function
 
 	@commands.command()
 	async def unbanword(self, ctx, word):
-		"""Unbans words from being said on the server. [WIP]"""
+		"""Unbans words from being said on the server."""
 		await unbanword(ctx, word) # uses the unbanword function
 		
 bot.add_cog(Moderation(bot))
