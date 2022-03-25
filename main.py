@@ -229,7 +229,7 @@ async def music(ctx, todo = None, file = None):
 	voice_client: discord.VoiceClient = discord.utils.get(bot.voice_clients, guild=guild)
 	if todo == "play":
 		if file != None:
-			audio_source = discord.FFmpegPCMAudio("assets/" + file + ".mp3", volume=0.30)
+			audio_source = discord.FFmpegPCMAudio("assets/" + file + ".mp3")
 			if not voice_client.is_playing():
 				voice_client.play(audio_source, after=None)
 				await ctx.send(f'Playing {file}.mp3')
