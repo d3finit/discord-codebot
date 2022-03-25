@@ -158,7 +158,6 @@ async def msgevent(message):
 					print("Banned word detected, removing...")
 					await message.delete()
 
-		
 class Moderation(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
@@ -326,7 +325,7 @@ async def msgevent(message):
 				data["levels"]["xp"] = data["levels"]["xp"] - (data["levels"]["level"]+1)*100
 				data["levels"]["level"] = data["levels"]["level"] + 1
 					
-				await message.channel.send(f"GG {str(message.author)}, you advanced to level {str(data['levels']['level'])}!")
+				await message.channel.send(f"GG {str(message.author.mention)}, you advanced to level {str(data['levels']['level'])}!")
 			os.remove(filename)
 
 			with open(filename, 'w') as f:
