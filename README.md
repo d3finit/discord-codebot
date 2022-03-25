@@ -1,5 +1,6 @@
-# discord-codebot
+# discord-codebot **[WIP]**
 [![CodeQL](https://github.com/CodeDude404/discord-codebot/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/CodeDude404/discord-codebot/actions/workflows/codeql-analysis.yml)
+
 A discord bot for all sorts of things.
 
 
