@@ -2,6 +2,8 @@ import discord
 import os
 from discord.ext import commands
 
+letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+
 # ==========================================================
 # Moderator Cog
 # ==========================================================
@@ -14,6 +16,26 @@ class Moderation(commands.Cog):
 	@commands.Cog.listener()
 	async def on_ready(self):
 		print("Moderation Cog loaded.")
+
+	# Banned words listener
+	@commands.Cog.listener('on_message')
+	async def msgevent(self, message):
+		if isinstance(message.channel, discord.channel.DMChannel) == False and message.author.bot != True:
+			gname = message.guild.name.replace(" ", "")
+			# Make sure this is the valid path to your file
+			file = f"conf/server/{gname}/bannedwords.txt"
+			with open(file) as f:
+				lines = f.read().splitlines()
+			for line in lines:
+				if line in message.content:
+					linevalid = False
+					for letter in letters:
+						if letter in line:
+							linevalid = True
+							break
+					if linevalid:	
+						print("Banned word detected, removing...")
+						await message.delete()
 
 	# Commands
 	# Mute command - Only users with the "Mod" role can use this
@@ -104,8 +126,6 @@ class Moderation(commands.Cog):
 		embed = discord.Embed(title=f"Added {word} to the banned words list.", description=f"Sucessfully banned {word}. Unban it with $unbanword {word}",colour=discord.Colour.red())	
 		
 		await ctx.send(embed=embed)
-
-	
 	
 	
 	# Unbanword command - Only users with the "Admin" role can use this

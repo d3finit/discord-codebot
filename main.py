@@ -6,8 +6,6 @@ import json, asyncio
 import discord
 from discord.ext import commands 
 
-letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-
 client = discord.Client()
 
 
@@ -30,53 +28,22 @@ bot = commands.Bot(
 )
 
 
-
-
-
 @bot.event
 async def on_ready():
 	# Setting `Playing ` status
 	await bot.change_presence(activity=discord.Game(name="$help | github.com/CodeDude404/discord-codebot"))
 
-	print("ONLINE NOW ;)")
+	print("Bot is online")
 
 	 # Setting `Streaming ` status
 	 # await bot.change_presence(activity=discord.Streaming(name="My Stream", url="google.com"))
 
 
 
-
-
-	
-
-
-# Banned words listener
-@bot.listen('on_message')
-async def msgevent(message):
-	if isinstance(message.channel, discord.channel.DMChannel) == False and message.author != bot.user:
-		gname = message.guild.name.replace(" ", "")
-		# Make sure this is the valid path to your file
-		file = f"conf/server/{gname}/bannedwords.txt"
-		with open(file) as f:
-			lines = f.read().splitlines()
-		for line in lines:
-			if line in message.content:
-				linevalid = False
-				for letter in letters:
-					if letter in line:
-						linevalid = True
-						break
-				if linevalid:	
-					print("Banned word detected, removing...")
-					await message.delete()
-
 # purge command
 @bot.command(name='purge', help='Deletes x messages',aliases=['clear','nuke','wipe'])
 async def purge(ctx, amount=5):
 	await ctx.channel.purge(limit=amount)
-
-
-
 
 
 # ==========================================================
@@ -101,10 +68,10 @@ async def music(ctx, todo = None, file = None):
 	voice_client: discord.VoiceClient = discord.utils.get(bot.voice_clients, guild=guild)
 	if todo == "play":
 		if file != None:
-			audio_source = discord.FFmpegPCMAudio("assets/" + file + ".mp3")
+			audio_source = discord.FFmpegPCMAudio("conf/assets/" + file + ".mp3")
 			if not voice_client.is_playing():
 				voice_client.play(audio_source, after=None)
-				await ctx.send(f'Playing {file}.mp3')
+				await ctx.send(f'Playing {file}')
 			else:		
 				await ctx.send(f'Failed to play {file}.mp3. Try running $music stop then trying again.')
 
@@ -118,10 +85,10 @@ async def music(ctx, todo = None, file = None):
 		voice_client.resume()
 		await ctx.send(f'Resumed music')
 	elif todo == "list":
-		songs = os.listdir("./assets")
+		songs = os.listdir("./conf/assets")
 		songstr = "Songs: \n  "
 		for i in range(len(songs)):
-			songstr = songstr + songs[i] +"\n  "
+			songstr = songstr + str(songs[i])[:-4] +"\n  "
 		await ctx.send(songstr)
 		
 
