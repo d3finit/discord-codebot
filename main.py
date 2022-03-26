@@ -1,11 +1,10 @@
 # bot.py
 import os
 import os.path
-import random, json
+import json, asyncio
 
 import discord
-import asyncio
-from discord.ext import commands
+from discord.ext import commands 
 
 letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 
@@ -138,6 +137,49 @@ async def unbanword(ctx, word):
 		
 	await ctx.send(embed=embed)
 
+class Moderation(commands.Cog):
+	def __init__(self, bot):
+		self.bot = bot
+		self._last_member = None
+
+
+	@commands.command()
+	@commands.has_role("Mod")
+	async def mute(self, ctx, user: discord.Member):
+		"""Mute users."""
+		await mute(ctx, user) # uses the mute function
+
+	@commands.command()
+	@commands.has_role("Mod")
+	async def unmute(self, ctx, user: discord.Member):
+		"""Unmute users."""
+		await unmute(ctx, user) # uses the unmute function
+
+	@commands.command()
+	@commands.has_role("Mod")
+	async def lock(self, ctx, channel: discord.TextChannel):
+		"""Locks channels."""
+		await lock(ctx, channel) # uses the lock function
+		
+	@commands.command()
+	@commands.has_role("Mod")
+	async def unlock(self, ctx, channel: discord.TextChannel):
+		"""Unlocks channels."""
+		await unlock(ctx, channel) # uses the unlock function
+		
+	@commands.command()
+	@commands.has_role("Admin")
+	async def banword(self, ctx, word):
+		"""Bans words from being said on the server."""
+		await banword(ctx, word) # uses the banword function
+
+	@commands.command()
+	@commands.has_role("Admin")
+	async def unbanword(self, ctx, word):
+		"""Unbans words from being said on the server."""
+		await unbanword(ctx, word) # uses the unbanword function
+
+
 # Banned words listener
 @bot.listen('on_message')
 async def msgevent(message):
@@ -158,42 +200,7 @@ async def msgevent(message):
 					print("Banned word detected, removing...")
 					await message.delete()
 
-class Moderation(commands.Cog):
-	def __init__(self, bot):
-		self.bot = bot
-		self._last_member = None
-
-
-	@commands.command()
-	async def mute(self, ctx, user: discord.Member):
-		"""Mute users."""
-		await mute(ctx, user) # uses the mute function
-
-	@commands.command()
-	async def unmute(self, ctx, user: discord.Member):
-		"""Unmute users."""
-		await unmute(ctx, user) # uses the unmute function
-
-	@commands.command()
-	async def lock(self, ctx, channel: discord.TextChannel):
-		"""Locks channels."""
-		await lock(ctx, channel) # uses the lock function
-		
-	@commands.command()
-	async def unlock(self, ctx, channel: discord.TextChannel):
-		"""Unlocks channels."""
-		await unlock(ctx, channel) # uses the unlock function
-		
-	@commands.command()
-	async def banword(self, ctx, word):
-		"""Bans words from being said on the server."""
-		await banword(ctx, word) # uses the banword function
-
-	@commands.command()
-	async def unbanword(self, ctx, word):
-		"""Unbans words from being said on the server."""
-		await unbanword(ctx, word) # uses the unbanword function
-		
+					
 bot.add_cog(Moderation(bot))
 
 
@@ -205,6 +212,9 @@ bot.add_cog(Moderation(bot))
 @bot.command(name='purge', help='Deletes x messages',aliases=['clear','nuke','wipe'])
 async def purge(ctx, amount=5):
 	await ctx.channel.purge(limit=amount)
+
+
+
 
 
 # ==========================================================
