@@ -27,7 +27,7 @@ class Moderation(commands.Cog):
 			with open(file) as f:
 				lines = f.read().splitlines()
 			for line in lines:
-				if line in message.content:
+				if line.lower() in message.content.lower():
 					linevalid = False
 					for letter in letters:
 						if letter in line:
@@ -114,9 +114,15 @@ class Moderation(commands.Cog):
 	async def banword(self, ctx, word):
 		"""Bans words from being said on the server."""
 		gname = ctx.guild.name.replace(" ", "")
-		os.system(f"mkdir conf/server/{gname}")
+		try:
+			os.system(f"mkdir conf/server/{gname}")
+		except:
+			pass
 		# print("Made folder")
-		os.system(f"touch conf/server/{gname}/bannedwords.txt")
+		try:
+			os.system(f"touch conf/server/{gname}/bannedwords.txt")
+		except:
+			pass
 		# print("Made file")
 
 		f = open(f"conf/server/{gname}/bannedwords.txt", "a")
