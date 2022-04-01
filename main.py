@@ -1,4 +1,4 @@
-# bot.py
+# main.py
 import os
 import os.path
 import json, asyncio
@@ -142,40 +142,6 @@ async def voiceevent(member, before, after):
 async def ping(ctx):
 	guild = ctx.guild		
 	await ctx.send('My ping is {0} ms'.format(str(bot.latency * 1000)))
-
-
-# ==========================================================
-# Levels Code
-# ==========================================================
-@bot.listen('on_message')
-async def msgevent(message):
-	if isinstance(message.channel, discord.channel.DMChannel) == False and message.author != bot.user:
-	# print(str(message.author) + " is trying to register")
-			# print(os.path.exists(f'conf/user/{message.author}.json'))
-		if os.path.exists(f'conf/user/{message.author}.json') == True:
-			filename = f'conf/user/{message.author}.json'
-			with open(filename, 'r') as f:
-				data = json.load(f)
-				#print(data)
-
-			data["levels"]["xp"] = len(message.content) + data["levels"]["xp"]
-			print(f"granted {str(len(message.content))} xp to {str(message.author)}")
-			if data["levels"]["xp"] >= (data["levels"]["level"]+1)*100:
-				data["levels"]["xp"] = data["levels"]["xp"] - (data["levels"]["level"]+1)*100
-				data["levels"]["level"] = data["levels"]["level"] + 1
-					
-				await message.channel.send(f"GG {str(message.author.mention)}, you advanced to level {str(data['levels']['level'])}!")
-			os.remove(filename)
-
-			with open(filename, 'w') as f:
-				json.dump(data, f, indent=4)
- 
-		else:
-			if os.path.exists(f'conf/user/{message.author}.json') == False:
-				f = open(f'conf/user/{message.author}.json', "w")
-				f.write(open("conf/user/default.json", "r").read())
-				f.close()
-
 
 
 for filename in os.listdir('./cogs'):
