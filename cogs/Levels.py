@@ -2,7 +2,6 @@ import discord
 import os, json
 from discord.ext import commands
 
-letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 
 # ==========================================================
 # Levels Cog

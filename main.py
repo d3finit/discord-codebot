@@ -135,14 +135,6 @@ async def voiceevent(member, before, after):
 	if after.channel.id == before.channel.id and not member.bot: 
 		voice_client = await channel.connect()
 
-# ==========================================================
-# Ping command
-# ==========================================================
-@bot.command(name='ping', help="Checks the bot's ping.")
-async def ping(ctx):
-	guild = ctx.guild		
-	await ctx.send('My ping is {0} ms'.format(str(bot.latency * 1000)))
-
 
 for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
