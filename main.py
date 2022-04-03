@@ -31,19 +31,10 @@ bot = commands.Bot(
 @bot.event
 async def on_ready():
 	# Setting `Playing ` status
-	await bot.change_presence(activity=discord.Game(name="$help | github.com/CodeDude404/discord-codebot"))
+	await bot.change_presence(activity=discord.Game(name="$help | discord.gg/7Y9fZEN58J"))
 
 	print("Bot is online")
 
-	 # Setting `Streaming ` status
-	 # await bot.change_presence(activity=discord.Streaming(name="My Stream", url="google.com"))
-
-
-
-# purge command
-@bot.command(name='purge', help='Deletes x messages',aliases=['clear','nuke','wipe'])
-async def purge(ctx, amount=5):
-	await ctx.channel.purge(limit=amount)
 
 
 # ==========================================================
@@ -92,49 +83,18 @@ async def music(ctx, todo = None, file = None):
 		await ctx.send(songstr)
 		
 
-# ==========================================================
-# Stats command
-# ==========================================================
 
-@bot.command(name='stats', help="Gets a user's stats")
-async def stats(ctx, member: discord.Member):
-	print(f"{member.name}#{member.discriminator}")
-	if os.path.exists(f'conf/user/{member.name}#{member.discriminator}.json') == True:
-		filename = f'conf/user/{member.name}#{member.discriminator}.json'
-		with open(filename, 'r') as f:
-			data = json.load(f)
-			xplevel = data["levels"]["xp"]
-			statlevel = str(data["levels"]["level"])
-		if member.nick == "None":
-			embed = discord.Embed(title=f"**Stats for {member.name}**", description=f"XP: {str(xplevel)}.\nLevel: {str(statlevel)}.",colour=discord.Colour.gold())
-		
-		else:
-			embed = discord.Embed(title=f"**Stats for {member.nick}**", description=f"XP: {str(xplevel)}.\nLevel: {str(statlevel)}.",colour=discord.Colour.gold())	
-		
-		await ctx.send(embed=embed)
-		# print(f"Unmuted user {member.mention}")
-
-
-
-
-		
-# ==========================================================
-# Reply to DM's
-# ==========================================================
-
-@bot.listen('on_message')
-async def msgevent(message):
-	if isinstance(message.channel, discord.channel.DMChannel) and message.author != bot.user:
-		if message.content == 'repo':
-			await message.channel.send('View our GitHub at github.com/CodeDude404/discord-codebot')
-		elif message.content == 'help':
-			await message.channel.send('Use $help in a server with the bot in it too see the help menu. Join out discord server for more help at discord.gg/7Y9fZEN58J.')
+# @bot.listen('on_voice_state_update')
+# async def voiceevent(member, before, after): 
+# 	if after.channel.id == before.channel.id and not member.bot: 
+# 		voice_client = await channel.connect()
 
 @bot.listen('on_voice_state_update')
-async def voiceevent(member, before, after): 
-	if after.channel.id == before.channel.id and not member.bot: 
-		voice_client = await channel.connect()
-
+async def on_voice_state_update(member, before, after): 
+	if not member.bot and after != None:
+		voice_client = await after.channel.connect() # Thing
+	if after is None:
+		before.channel.disconnect()
 
 for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):

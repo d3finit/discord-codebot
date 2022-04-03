@@ -47,6 +47,24 @@ class Levels(commands.Cog):
 					f.close()
 
 
+	@commands.command(name='stats', help="Gets a user's stats")
+	async def stats(ctx, member: discord.Member):
+		print(f"{member.name}#{member.discriminator}")
+		if os.path.exists(f'conf/user/{member.name}#{member.discriminator}.json') == True:
+			filename = f'conf/user/{member.name}#{member.discriminator}.json'
+			with open(filename, 'r') as f:
+				data = json.load(f)
+				xplevel = data["levels"]["xp"]
+				statlevel = str(data["levels"]["level"])
+			if member.nick == "None":
+				embed = discord.Embed(title=f"**Stats for {member.name}**", description=f"XP: {str(xplevel)}.\nLevel: {str(statlevel)}.",colour=discord.Colour.gold())
+		
+			else:
+				embed = discord.Embed(title=f"**Stats for {member.nick}**", description=f"XP: {str(xplevel)}.\nLevel: {str(statlevel)}.",colour=discord.Colour.gold())	
+		
+			await ctx.send(embed=embed)
+		# print(f"Unmuted user {member.mention}")
+
 
 
 

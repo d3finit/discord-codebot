@@ -80,7 +80,10 @@ class Moderation(commands.Cog):
 
 
 
-
+	# purge command
+	@commands.command(name='purge', help='Deletes x messages',aliases=['clear','nuke','wipe'])
+	async def purge(ctx, amount=5):
+		await ctx.channel.purge(limit=amount)
 		
 	
 	# Lock command - Only users with the "Mod" role can use this
