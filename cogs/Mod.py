@@ -119,18 +119,16 @@ class Moderation(commands.Cog):
 		gname = ctx.guild.name.replace(" ", "")
 		try:
 			os.system(f"mkdir conf/server/{gname}")
-		except:
-			pass
+		except Exception as e:
+			print(e)
 		# print("Made folder")
 		try:
 			os.system(f"touch conf/server/{gname}/bannedwords.txt")
-		except:
-			pass
+		except Exception as e:
+			print(e)
 		# print("Made file")
 
 		f = open(f"conf/server/{gname}/bannedwords.txt", "a")
-		os.system(f"mkdir conf/server/{gname}")
-		os.system(f"touch conf/server/{gname}/bannedwords.txt")
 		f.write(f"\n{word}")
 		f.close()
 
