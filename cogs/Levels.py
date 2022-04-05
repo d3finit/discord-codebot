@@ -19,7 +19,7 @@ class Levels(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
-		if isinstance(message.channel, discord.channel.DMChannel) == False and message.author != commands.bot.user:
+		if isinstance(message.channel, discord.channel.DMChannel) == False and message.author.bot == False:
 		# print(str(message.author) + " is trying to register")
 				# print(os.path.exists(f'conf/user/{message.author}.json'))
 			if os.path.exists(f'conf/user/{message.author}.json') == True:
