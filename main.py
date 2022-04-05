@@ -8,11 +8,13 @@ from discord.ext import commands
 
 client = discord.Client()
 
-
-with open("TOKEN.txt") as f:
-	TOKEN = f.read()
-if TOKEN == "":
-	TOKEN = os.environ['TOKEN']
+try:
+	with open("TOKEN.txt") as f:
+		TOKEN = f.read()
+	if TOKEN == "":
+		TOKEN = os.environ['DISCORD_TOKEN']
+except:
+	TOKEN = os.environ["DISCORD_TOKEN"]
 
 # print(TOKEN)
 # Change only the no_category default string
