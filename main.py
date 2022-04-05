@@ -93,16 +93,17 @@ async def on_voice_state_update(member, before, after):
 	if not member.bot and after != None and before.channel != after.channel:
 		try:
 			voice_client = await after.channel.connect() # Thing
-			myobj = gTTS(text="Hi", lang="en", slow=False)
+			myobj = gTTS(text=f"{member.display_name} has joined the voice channel.", lang="en", slow=False)
 			myobj.save("speech.mp3")
 			audio_source = discord.FFmpegPCMAudio('speech.mp3')
 			if not voice_client.is_playing():
 				voice_client.play(audio_source, after=None)
+			while voice_client.is_playing():
+				pass
+			after.channel.disconnect()
 				
 		except:
 			pass
-	if after is None:
-		before.channel.disconnect()
 
 
 
