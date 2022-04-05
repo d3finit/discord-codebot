@@ -129,6 +129,8 @@ class Moderation(commands.Cog):
 		# print("Made file")
 
 		f = open(f"conf/server/{gname}/bannedwords.txt", "a")
+		os.system(f"mkdir conf/server/{gname}")
+		os.system(f"touch conf/server/{gname}/bannedwords.txt")
 		f.write(f"\n{word}")
 		f.close()
 

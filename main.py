@@ -93,7 +93,7 @@ async def music(ctx, todo = None, file = None):
 
 @bot.listen('on_voice_state_update')
 async def on_voice_state_update(member, before, after): 
-	if not member.bot and after != None:
+	if not member.bot and after != None and before != after:
 		voice_client = await after.channel.connect() # Thing
 	if after is None:
 		before.channel.disconnect()
