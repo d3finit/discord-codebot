@@ -8,7 +8,6 @@ from discord.ext import commands
 from gtts import gTTS # Text to speech
 
 client = discord.Client()
-engine = pyttsx3.init()
 
 try:
 	with open("TOKEN.txt") as f:
