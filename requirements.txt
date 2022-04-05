@@ -43,4 +43,7 @@ yarl==1.7.2
 zope.event==4.5.0
 zope.interface==5.4.0
 PyNaCl==1.5.0
+<<<<<<< HEAD
 pyttsx3==2.90
+=======
+>>>>>>> origin/main
