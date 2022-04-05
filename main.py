@@ -5,7 +5,7 @@ import json, asyncio
 
 import discord
 from discord.ext import commands 
-import pyttsx3 # Text to speech
+from gtts import gTTS # Text to speech
 
 client = discord.Client()
 engine = pyttsx3.init()
@@ -94,7 +94,8 @@ async def on_voice_state_update(member, before, after):
 	if not member.bot and after != None and before.channel != after.channel:
 		try:
 			voice_client = await after.channel.connect() # Thing
-			engine.save_to_file("Hello", 'speech.mp3')
+			myobj = gTTS(text="Hi", lang="en", slow=False)
+			myobj.save("speech.mp3")
 			engine.runAndWait()
 			audio_source = discord.FFmpegPCMAudio('speech.mp3')
 			if not voice_client.is_playing():
