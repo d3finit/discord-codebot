@@ -95,7 +95,6 @@ async def on_voice_state_update(member, before, after):
 			voice_client = await after.channel.connect() # Thing
 			myobj = gTTS(text="Hi", lang="en", slow=False)
 			myobj.save("speech.mp3")
-			engine.runAndWait()
 			audio_source = discord.FFmpegPCMAudio('speech.mp3')
 			if not voice_client.is_playing():
 				voice_client.play(audio_source, after=None)
