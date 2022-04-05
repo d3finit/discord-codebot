@@ -5,8 +5,10 @@ import json, asyncio
 
 import discord
 from discord.ext import commands 
+import pyttsx3 # Text to speech
 
 client = discord.Client()
+engine = pyttsx3.init()
 
 try:
 	with open("TOKEN.txt") as f:
@@ -86,17 +88,24 @@ async def music(ctx, todo = None, file = None):
 		
 
 
-# @bot.listen('on_voice_state_update')
-# async def voiceevent(member, before, after): 
-# 	if after.channel.id == before.channel.id and not member.bot: 
-# 		voice_client = await channel.connect()
 
 @bot.listen('on_voice_state_update')
 async def on_voice_state_update(member, before, after): 
-	if not member.bot and after != None and before != after:
-		voice_client = await after.channel.connect() # Thing
+	if not member.bot and after != None and before.channel != after.channel:
+		try:
+			voice_client = await after.channel.connect() # Thing
+			engine.save_to_file("Hello", 'speech.mp3')
+			engine.runAndWait()
+			audio_source = discord.FFmpegPCMAudio('speech.mp3')
+			if not voice_client.is_playing():
+				voice_client.play(audio_source, after=None)
+				
+		except:
+			pass
 	if after is None:
 		before.channel.disconnect()
+
+
 
 for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
