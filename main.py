@@ -25,7 +25,7 @@ help_command = commands.DefaultHelpCommand(
 
 # Create the bot and pass it the modified help_command
 bot = commands.Bot(
-	command_prefix = commands.when_mentioned_or('b$'),
+	command_prefix = commands.when_mentioned_or('$'),
 	description = "=== CodeBot Help ===",
 	help_command = help_command
 )
