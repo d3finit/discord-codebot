@@ -20,12 +20,12 @@ except:
 # print(TOKEN)
 # Change only the no_category default string
 help_command = commands.DefaultHelpCommand(
-	no_category = 'Commands'
+	no_category = 'Other'
 )
 
 # Create the bot and pass it the modified help_command
 bot = commands.Bot(
-	command_prefix = commands.when_mentioned_or('$'),
+	command_prefix = commands.when_mentioned_or('b$'),
 	description = "=== CodeBot Help ===",
 	help_command = help_command
 )
@@ -56,11 +56,11 @@ async def leave(ctx):
 	await ctx.voice_client.disconnect();
 	await ctx.send('Left voice.');
 
-@bot.command(aliases=['m'],name='music', help='Allows you to play mp3s. ($music list to see all songs, $m <arg> is the same thing.)')
-async def music(ctx, todo = None, file = None):
+@bot.command(aliases=['m'],name='music', help='Allows you to play mp3s.')
+async def music(ctx, input1 = None, file = None):
 	guild = ctx.guild
 	voice_client: discord.VoiceClient = discord.utils.get(bot.voice_clients, guild=guild)
-	if todo == "play":
+	if input1 == "play":
 		if file != None:
 			audio_source = discord.FFmpegPCMAudio("conf/assets/" + file + ".mp3")
 			if not voice_client.is_playing():
@@ -69,22 +69,22 @@ async def music(ctx, todo = None, file = None):
 			else:		
 				await ctx.send(f'Failed to play {file}.mp3. Try running $music stop then trying again.')
 
-	elif todo == "stop":
+	elif input1 == "stop":
 		voice_client.stop()		
 		await ctx.send(f'Stopped music.')
-	elif todo == "pause":
+	elif input1 == "pause":
 		voice_client.pause()
 		await ctx.send(f'Paused music')
-	elif todo == "resume":
+	elif input1 == "resume":
 		voice_client.resume()
 		await ctx.send(f'Resumed music')
-	elif todo == "list":
+	elif input1 == "search":
 		songs = os.listdir("./conf/assets")
 		songstr = "Songs: \n  "
 		for i in range(len(songs)):
-			songstr = songstr + str(songs[i])[:-4] +"\n  "
+			if file in str(songs[i])[:-4]:
+				songstr = songstr + str(songs[i])[:-4] +"\n  "
 		await ctx.send(songstr)
-		
 
 
 
