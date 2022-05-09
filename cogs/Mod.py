@@ -106,7 +106,7 @@ class Moderation(commands.Cog):
 		"""Unlocks channels."""
 		channel = channel or ctx.channel
 		overwrite = channel.overwrites_for(ctx.guild.default_role)
-		overwrite.send_messages = Null
+		overwrite.send_messages = None
 		await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
 		await ctx.send('Channel unlocked.')
 
