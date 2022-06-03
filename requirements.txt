@@ -4,7 +4,7 @@ async-timeout==3.0.1
 attrs==21.4.0
 auto-py-to-exe==2.15.0
 autopep8==1.6.0
-bottle==0.12.19
+bottle==0.12.20
 bottle-websocket==0.2.9
 cffi==1.15.0
 chardet==4.0.0
