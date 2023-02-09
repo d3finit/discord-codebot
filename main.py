@@ -5,7 +5,8 @@ import json, asyncio
 
 import discord
 from discord.ext import commands 
-from gtts import gTTS # Text to speech
+from gtts import gTTS
+from pytube import YouTube, Search
 
 client = discord.Client()
 
@@ -34,7 +35,7 @@ bot = commands.Bot(
 @bot.event
 async def on_ready():
 	# Setting `Playing ` status
-	await bot.change_presence(activity=discord.Game(name="$help | discord.gg/7Y9fZEN58J"))
+	await bot.change_presence(activity=discord.Game(name="$help"))
 
 	print("Bot is online")
 
@@ -61,8 +62,17 @@ async def music(ctx, input1 = None, file = None):
 	guild = ctx.guild
 	voice_client: discord.VoiceClient = discord.utils.get(bot.voice_clients, guild=guild)
 	if input1 == "play":
-		if file != None:
-			audio_source = discord.FFmpegPCMAudio("conf/assets/" + file + ".mp3")
+		if file is not None:
+			s = Search(file)
+			s.results
+			video = s.results[0].streams.filter(only_audio=True).first()
+			destination = '.'
+			out_file = video.download(output_path=destination)
+			base, ext = os.path.splitext(out_file)
+			new_file = "file" + '.mp3'
+			os.rename(out_file, new_file)
+
+			audio_source = discord.FFmpegPCMAudio("./file.mp3")
 			if not voice_client.is_playing():
 				voice_client.play(audio_source, after=None)
 				await ctx.send(f'Playing {file}')
@@ -78,13 +88,6 @@ async def music(ctx, input1 = None, file = None):
 	elif input1 == "resume":
 		voice_client.resume()
 		await ctx.send(f'Resumed music')
-	elif input1 == "search":
-		songs = os.listdir("./conf/assets")
-		songstr = "Songs: \n  "
-		for i in range(len(songs)):
-			if file in str(songs[i])[:-4]:
-				songstr = songstr + str(songs[i])[:-4] +"\n  "
-		await ctx.send(songstr)
 
 
 

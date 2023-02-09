@@ -22,7 +22,6 @@ class Moderation(commands.Cog):
 	async def msgevent(self, message):
 		if isinstance(message.channel, discord.channel.DMChannel) == False and message.author.bot != True:
 			gname = message.guild.name.replace(" ", "")
-			# Make sure this is the valid path to your file
 			file = f"conf/server/{gname}/bannedwords.txt"
 			with open(file) as f:
 				lines = f.read().splitlines()
