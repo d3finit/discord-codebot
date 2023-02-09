@@ -8,7 +8,11 @@ from discord.ext import commands
 from gtts import gTTS
 from pytube import YouTube, Search
 
-client = discord.Client()
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+client = discord.Client(intents=intents)
 
 try:
 	with open("TOKEN.txt") as f:
@@ -28,7 +32,8 @@ help_command = commands.DefaultHelpCommand(
 bot = commands.Bot(
 	command_prefix = commands.when_mentioned_or('$'),
 	description = "=== CodeBot Help ===",
-	help_command = help_command
+	help_command = help_command,
+	intents = intents
 )
 
 
