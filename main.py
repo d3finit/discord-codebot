@@ -74,7 +74,7 @@ async def music(ctx, input1 = None, file = None):
 			destination = '.'
 			out_file = video.download(output_path=destination)
 			base, ext = os.path.splitext(out_file)
-			new_file = "file" + '.mp3'
+			new_file = "./file" + '.mp3'
 			os.rename(out_file, new_file)
 
 			audio_source = discord.FFmpegPCMAudio("./file.mp3")
