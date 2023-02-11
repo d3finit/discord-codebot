@@ -3,6 +3,7 @@ import os
 import os.path
 from pytube import YouTube, Search
 from disnake.ext import commands
+import disnake
 
 bot = commands.Bot(
     command_prefix=';',
@@ -22,18 +23,24 @@ except:
 
 
 @bot.slash_command(description="Plays from youtube")
-async def play(inter, name:string):
-	s = Search(file)
+async def play(inter, name):
+	s = Search(name)
 	s.results
 	video = s.results[0].streams.filter(only_audio=True).first()
 	destination = '.'
 	out_file = video.download(output_path=destination)
 	base, ext = os.path.splitext(out_file)
+	os.remove("./file.mp3")
 	new_file = "./file" + '.mp3'
 	os.rename(out_file, new_file)
-	vc = await channel.connect()
-	vc.play(disnake.FFmpegPCMAudio('./file.mp3'), after=lambda e: print('done', e))
-    await inter.response.send_message(f"Played {}")
+	channel = inter.author.voice.channel
+
+	if channel is None: 
+		await inter.response.send_message('You are not in a voice channel.')
+	else: 
+		vc = await channel.connect()
+		vc.play(disnake.FFmpegPCMAudio('./file.mp3'), after=lambda e: print('done', e))
+		await inter.response.send_message(f"Played {video.title}")
 
 
 
@@ -41,4 +48,4 @@ async def play(inter, name:string):
 bot.load_extension("cogs.ping") 
 
 
-client.run(TOKEN)
+bot.run(TOKEN)
