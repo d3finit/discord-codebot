@@ -28,7 +28,7 @@ Pillow==10.0.1
 pycodestyle==2.8.0
 pycparser==2.21
 pygame==2.1.2
-pyinstaller==4.8
+pyinstaller==5.13.1
 pyinstaller-hooks-contrib==2021.5
 pyparsing==3.0.7
 PySimpleGUI==4.56.0
